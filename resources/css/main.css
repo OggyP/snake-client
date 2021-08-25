@@ -1,0 +1,262 @@
+/********************
+       GENERAL
+********************/
+body {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+
+/**INPUT**/
+input[type="text"],
+input[type="password"] {
+    background: none;
+    outline: none;
+    margin: 10px;
+    border: none;
+    padding: 0 5px;
+    border-bottom: 2px solid rgb(200, 200, 200);
+    width: 250px;
+    height: 50px;
+
+    font-size: 20px;
+    font-family: 'Didact Gothic', sans-serif;
+    color: white;
+}
+
+input[type="text"]:hover,
+input[type="password"]:hover,
+input[type="text"]:focus,
+input[type="password"]:focus {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+}
+
+
+/**BUTTON**/
+.button {
+    background: rgba(100, 100, 100, 0.5);
+    margin: 10px;
+    border: 1px solid rgba(100, 100, 100, 0.5);
+    border-radius: 5px;
+    padding: 5px;
+
+    transition: background-color 50ms;
+}
+
+.button:hover {
+    background: rgba(100, 100, 100, 1);
+    border: 1px solid rgba(100, 100, 100, 1);
+}
+
+.button * {
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.button,
+.button * {
+    /* Styling is inconsistent between text inside an element and text outside and element */
+    /* E.g. div.button>{text} is styled with .button, but div.button>span>{text}is styled with .button span */
+    font-size: 20px;
+    font-family: 'Didact Gothic', sans-serif;
+    color: white;
+}
+
+.button .material-icons-round {
+    position: relative;
+    top: 5px;
+}
+
+
+
+
+/********************
+  LOGIN & REGISTER
+********************/
+#account-wrapper {
+    background: #3e4045;
+    width: 100vw;
+    height: 100vw;
+    position: fixed;
+    z-index: 10;
+}
+
+.login-bg {
+    opacity: 0.05;
+    position: absolute;
+    z-index: -1;
+}
+
+#account-wrapper > div {
+    position: fixed;
+    top: 0;
+}
+
+#register {
+    left: 100vw;
+}
+
+
+
+
+/********************
+        MAIN
+********************/
+main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+main > * {
+    margin: 20px;
+    padding: 20px;
+    height: calc(100% - 40px);
+}
+
+
+/**TITLE**/
+.title {
+    width: 75%;
+}
+
+.title img {
+    width: 10%;
+}
+
+
+/**GAMEMODES**/
+.gamemodes {
+    background: #23272A;
+    border-radius: 10px;
+    width: 125%;
+    position: relative;
+}
+
+.gamemodes > div {
+    margin: 0 10%;
+}
+
+  /* dividers */
+.gamemodes hr {
+    width: 80%;
+    position: absolute;
+    left: 10%;
+}
+
+.gamemodes hr:first-of-type {
+    top: 10%;
+}
+
+.gamemodes hr:nth-of-type(2) {
+    bottom: 20%;
+}
+
+  /* icons */
+.gamemodes > * > .material-icons-round {
+    position: absolute;
+    left: 4%;
+}
+
+.multiplayer > .material-icons-round {
+    top: 14.5%;
+}
+
+.private > .material-icons-round {
+    top: 84%;
+}
+
+  /* singleplayer */
+.singleplayer {
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+  /* multiplayer */
+.multiplayer {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+    height: 70%;
+}
+
+.rated-select .button,
+.unrated-select .button {
+    width: 75px;
+    height: 75px;
+}
+
+.rated-select span,
+.unrated-select span {
+    font-size: 32px;
+}
+
+.rated-select .button ~ .button,
+.unrated-select .button ~ .button {
+    margin: 10px 10px 10px 50px;
+}
+
+.rated-select .rating-preview {
+    font-size: 16px;
+}
+
+  /* private */
+.private {
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+/********************
+       LOADING
+********************/
+#game-type {
+    margin: 1vh 0;
+    font-size: 1.25vw;
+    font-weight: 300;
+    color: lightgrey;
+}
+
+    /* Thanks to thetallweeks on CodePen for the loading animation */
+.loading {
+    margin-top: 0;
+    position: relative;
+}
+
+.loading:after {
+    overflow: hidden;
+    position: absolute;
+    display: inline-block;
+    vertical-align: bottom;
+    -webkit-animation: ellipsis steps(4,end) 1000ms infinite;
+    animation: ellipsis steps(4,end) 1000ms infinite;
+    content: "...";
+    width: 0px;
+}
+
+@keyframes ellipsis {
+    to {
+        width: 2.5em;
+    }
+}
+
+
+/* GAME CODE */
+#game-code {
+    font-family: 'Didact Gothic', sans-serif;
+}

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="/resources/js/jquery.js"></script>
+    <title>OggyP Snake</title>
+    <meta name="description" content="">
+<!--    META-->
+    <meta charset="UTF-8">
+    <meta name="keywords" content="oggyp, oggy, social, chat, message, text, OggyP">
+    <meta name="author" content="Oscar Pritchard, Kaelan Carlos, Ewan Odenthal">
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <meta property="og:title" content="OggyP Snake">
+    <meta property="og:description" content="Play the classic arcade game snake in both singleplayer and multiplayer modes on snake.oggyp.com!">
+    <meta name="description" content="Play the classic arcade game snake in both singleplayer and multiplayer modes on snake.oggyp.com!">
+
+    <meta property="og:url" content="https://snake.oggyp.com">
+    <meta property="og:site_name" content="OggyP Snake">
+    <meta property="og:image" content="/resources/images/OSI.png">
+<!--    END META-->
+
+    <link href="/resources/css/essential.css" rel="stylesheet">
+    <link href="/resources/css/main.css" rel="stylesheet">
+    <script>
+        let loginWidth;
+        let loginHeight;
+        window.onload = function () {
+            loginWidth = $('#login').width();
+            loginHeight = $('#login').height();
+        }
+
+        function hideRegister() {
+            $('#login').animate({ left: 0 });
+            $('#register').animate({ left: loginWidth });
+        }
+
+        function showRegister() {
+            $('#login').animate({ left: -loginWidth });
+            $('#register').animate({ left: 0 });
+        }
+    </script>
+
+<!--    FONTS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;500&display=swap" rel="stylesheet">
+<!--    END OF FONTS-->
+</head>
+<body class="no-scroll">
+    <div id="account-wrapper">
+        <img src="/resources/images/snake-greyscale-new.png" alt="snake background" class="login-bg">
+
+        <div id="login" class="centre-items">
+            <h1>Login</h1>
+            <p id="login-error"></p>
+            <form action="/" method="post" onsubmit="login(); return false;">
+                <input type="text" id="username-input" value="" placeholder="Username">
+                <br>
+                <input type="password" id="password-input" value="" placeholder="Password">
+                <input type="submit" hidden>
+            </form>
+            <button onclick="login()" class="button">
+                Login
+                <span class="material-icons-round">login</span>
+            </button>
+            <div>
+                <span>Don't have an account?</span>
+                <button onclick="showRegister();" class="button">Register now!</button>
+            </div>
+        </div>
+
+
+        <div id="register" class="centre-items">
+            <h1>Register</h1>
+            <p id="register-error"></p>
+            <form action="/" method="post" onsubmit="register(); return false;">
+                <input type="text" id="username-register" value="" placeholder="Username"><br>
+                <input type="password" id="password-register" value="" placeholder="Password"><br>
+                <input type="password" id="password-register-verify" value="" placeholder="Verify Password">
+                <input type="submit" hidden>
+            </form>
+            <button onclick="register()" class="button">
+                Register
+                <span class="material-icons-round">add_circle</span>
+            </button>
+            <div>
+                Already have an account?
+                <button onclick="hideRegister()" class="button">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-login" class="centre-items">
+        <h1 id="loading1">Connecting to OggyP Snake Servers</h1>
+        <p id="loading2">If this persists then try and reload the page.</p>
+        <div class="singleplayer">
+            <span class="material-icons-round">person</span>
+            <div class="button"><a href="raw_game.html">Singleplayer</a></div>
+        </div>
+    </div>
+
+
+    <main id="game-select">
+<!--        The options class should be top left. I want to have the username and the logout button there. Ok Kaelan now code the css for it-->
+        <section class="options">
+            <p id="username" class="info username"></p>
+            <button id="option logout" onclick="logout()">Logout</button>
+        </section>
+
+        <section class="title centre-items">
+            <h1 class="find-game">OggyP Snake</h1>
+            <img src="/resources/images/snake.png" alt="snake silhouette">
+            <button id="requeue-btn" class="button" onclick="requeue()">
+                <span id="requeue-name">None</span>
+            </button>
+        </section>
+<!--        <div class="rating">-->
+<!--            Rating: <span id="2-player-rating"></span>-->
+<!--        </div>-->
+
+        <section class="gamemodes">
+            <div class="singleplayer">
+                <span class="material-icons-round">person</span>
+                <div class="button"><a href="raw_game.html">Singleplayer</a></div>
+            </div>
+
+            <hr>
+
+            <div class="multiplayer" id="multiplayer-select">
+                <span class="material-icons-round">group</span>
+
+                <h2>Rated</h2>
+                <div class="rated-select">
+                    <button class="button" onclick="btnClicked('2pR', '2 Player Rated')">
+                        <span id="2-player-rated">2P</span>
+                        <span id="2-player-rating" class="rating-preview"></span>
+                    </button>
+                    <button class="button" onclick="btnClicked('3pR', '3 Player Rated')">
+                        <span id="3-player-rated">3P</span>
+                        <span id="3-player-rating" class="rating-preview"></span>
+                    </button>
+                </div>
+
+                <div class="spacer"></div>
+
+                <h2>Unrated</h2>
+                <div class="unrated-select">
+                    <button class="button" onclick="btnClicked('2p', '2 Player Unrated')">
+                        <span id="2-player">2P</span>
+                    </button>
+                    <button class="button" onclick="btnClicked('3p', '3 Player Unrated')">
+                        <span id="3-player">3P</span>
+                    </button>
+                    <button class="button" onclick="btnClicked('4p', '4 Player Unrated')">
+                        <span id="4-player">4P</span>
+                    </button>
+                </div>
+
+                <div class="spacer"></div>
+
+                <h2>Variations</h2>
+                <div class="variation-select">
+                    <h3>Tron</h3>
+                    <button class="button" onclick="btnClicked('2pv1', '2 Player Unrated \'Tron\' Variation')">
+                        <span id="2-player-v1">2P</span>
+                    </button>
+                    <button class="button" onclick="btnClicked('3pv1', '3 Player Unrated \'Tron\' Variation')">
+                        <span id="3-player-v1">3P</span>
+                    </button>
+                    <button class="button" onclick="btnClicked('4pv1', '4 Player Unrated \'Tron\' Variation')">
+                        <span id="4-player-v1">4P</span>
+                    </button>
+
+                    <h3>Double Speed</h3>
+                    <button class="button" onclick="btnClicked('2pv2', '2 Player Unrated Double Speed')">
+                        <span id="2-player-v2">2P</span>
+                    </button>
+                    <button class="button" onclick="btnClicked('3pv2', '3 Player Unrated Double Speed')">
+                        <span id="3-player-v2">3P</span>
+                    </button>
+                    <button class="button" onclick="btnClicked('4pv2', '4 Player Unrated Double Speed')">
+                        <span id="4-player-v2">4P</span>
+                    </button>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="private">
+                <span class="material-icons-round">lock</span>
+
+                <div>
+                    <input id="private-code" type="text" placeholder="Enter a private game code.">
+                    <button class="button">
+                        <span onclick="send_one(ws, 'match', 'find private', [['code', $('#private-code').val()]]); $('#game-type').text('Private Match Unrated')">Join</span>
+                    </button>
+                </div>
+
+                <button class="button">
+                    <span onclick="send_one(ws, 'match', 'new private', []); $('#game-type').text('Private Match Unrated')">or Create a new private game</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+
+    <div id="loading" class="centre-items">
+        <h1 id="game-type"></h1>
+        <h1 class="loading">Waiting for players</h1>
+        <h2 id="game-code">Game Code</h2>
+        <div class="button">
+            <input type="button" onclick="home()" class="loading" value="Go Home">
+        </div>
+        <h2 id="player-list-title">Players Queuing (1/1):</h2>
+        <ul id="player-list">
+
+        </ul>
+    </div>
+
+
+    <div id="game" class="centre-items">
+        <div class="username-wrapper">
+            <div class="player1-info">
+                <p><span id="player1-title" class="player-title"></span><span id="player1-username">Player 1</span> | <span id="player1-rating">1200</span> | <span id="player1-length">0</span></p>
+            </div>
+            <div class="player2-info">
+                <p><span id="player2-title" class="player-title"></span><span id="player2-username">Player 2</span> | <span id="player2-rating">1200</span> | <span id="player2-length">0</span></p>
+            </div>
+            <div class="player3-info">
+                <p><span id="player3-title" class="player-title"></span><span id="player3-username">Player 3</span> | <span id="player3-rating">1200</span> | <span id="player3-length">0</span></p>
+            </div>
+            <div class="player4-info">
+                <p><span id="player4-title" class="player-title"></span><span id="player4-username">Player 4</span> | <span id="player4-rating">1200</span> | <span id="player4-length">0</span></p>
+            </div>
+        </div>
+        <div class="countdown" id="countdown"></div>
+        <canvas id="canvas"></canvas>
+    </div>
+    <script src="resources/js/multi-player.js"></script>
+</body>
+</html>

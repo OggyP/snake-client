@@ -1,0 +1,29 @@
+body {
+    padding: 50px;
+}
+
+/* OPTIONS PANEL */
+.options {
+    background: var(--grey);
+    border-radius: 10px;
+    width: 300px;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+}
+
+.options a {
+    color: white;
+}
+
+/* */
+nav {
+    position: fixed;
+    top: 12.5%;
+    left: 37.5%;
+}

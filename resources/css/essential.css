@@ -1,0 +1,160 @@
+/*!
+  (C) Copyright 2021 Oscar P., Kaelan C. and other contributors.
+  
+  This document seeks to outline the general styling used by most components. This document was not 
+  intended to contain page-specific or genre-specific styling, such as styling of a form or of a
+  certain page.
+*/
+
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    background: #3e4045;
+    font-family: 'Didact Gothic', sans-serif;
+    color: white;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.blue-background {
+    background: #055289;
+}
+
+.green-background {
+    background: #098e09;
+}
+
+.orange-background {
+    background: #bf4d11;
+}
+
+.purple-background {
+    background: #500495;
+}
+
+h1 {
+    margin: 1em 2em;
+    font-size: 2vw;
+    color: white;
+    font-family: 'Roboto Mono', monospace;
+}
+
+canvas {
+    border: none;
+    background: #232323;
+    /*width: 100%;*/
+    /*height: 100%;*/
+}
+
+.countdown {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.player1 {
+    color: #00ff00;
+}
+
+.player2 {
+    color: rgb(0,142,255);
+}
+
+.username-wrapper {
+    padding: 0 10em;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.player1-info,
+.player2-info,
+.player3-info,
+.player4-info {
+    font-family: 'Roboto Mono', monospace;
+}
+
+#player1-username::before,
+#player2-username::before,
+#player3-username::before,
+#player4-username::before {
+    content: ' ';
+    
+    margin-right: 5px;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+}
+
+#player1-username::before {
+    background: rgb(0, 255, 0);
+}
+
+#player2-username::before {
+    background: rgb(0, 142, 255);
+}
+
+#player3-username::before {
+    background: rgb(255, 119, 0);
+}
+
+#player4-username::before {
+    background: rgb(128, 14, 243);
+}
+
+.rating {
+    font-family: 'Didact Gothic', sans-serif;
+    font-size: 2vw;
+}
+
+.player-title {
+    margin-right: 15px;
+    display: inline-block;
+    position: relative;
+    font-family: 'Roboto Mono', monospace;
+    color: white;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+.player-title::after {
+    content: '';
+    border-bottom: 1px solid white;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    animation: widen 1000ms;
+}
+
+@keyframes widen {
+	from {
+		width: 0;
+	}
+	to {
+		width: 100%;
+	}
+}
+
+.spacer {
+    height: 5vh;
+}
+
+.centre-items {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
