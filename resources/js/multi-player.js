@@ -1,5 +1,5 @@
 // define
-const clientVersion = 4.0
+const clientVersion = 5.0
 var ws = new WebSocket('wss://snake.oggyp.com:8444');
 var game_start = false;
 var player_no = 0;
@@ -414,7 +414,7 @@ ws.onmessage = function (ev) {
         else if (message.type === 'login') {
             if (message.content === 'success') {
                 if (message.hasOwnProperty("token")) {
-                    setCookie("token", message.token, 7)
+                    setCookie("token", message.token + "|" + message.userID, 7)
                 }
                 $('#username').text(message.username)
                 $('#loading-login').hide();
@@ -427,8 +427,6 @@ ws.onmessage = function (ev) {
             }
 
             else if (message.content === 'fail') {
-                $('#loading-login').hide();
-                $('#account-wrapper').show();
                 $('#login-error').text(message.reason)
             }
         }
@@ -465,7 +463,7 @@ ws.onmessage = function (ev) {
         }
 
         else if (message.type === 'gameVersion') {
-            if (Math.floor(message.content) !== Math.floor(clientVersion)) {
+            if (Math.floor(message.content) !== Math.floor(clientVersion) && getCookie("dev") === "") {
                 error("You are running an incompatible version of snake!", "Client Version: " + clientVersion + " | Server Version: " + message.content + " | Try force reloading the page.")
                 // console.log("Attempting auto reload.")
                 // window.location.reload(true)
@@ -536,8 +534,6 @@ function register() {
 
 function login() {
     send_one(ws, 'login', $('#username-input').val(), [['password', $('#password-input').val()]])
-    $('#account-wrapper').hide();
-    $('#loading-login').show();
 }
 
 function send_one(ws, type, content, meta) {
