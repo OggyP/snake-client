@@ -1,5 +1,5 @@
 // define
-const clientVersion = 5.0
+const clientVersion = 6.0
 var ws = new WebSocket('wss://snake.oggyp.com:8444');
 var game_start = false;
 var player_no = 0;
@@ -582,7 +582,10 @@ function requeue() {
 }
 
 function logout() {
-    send_one(ws, 'logout', '', [["token", getCookie("token")]])
+    if (getCookie("token") !== "") {
+        send_one(ws, 'logout', '', [["token", getCookie("token")]])
+    }
+
     deleteCookie("token")
 }
 
