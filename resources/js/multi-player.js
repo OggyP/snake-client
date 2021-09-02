@@ -99,22 +99,22 @@ window.addEventListener("keydown", function (event) {
 
         var key_press = false
 
-        if (event.key === "ArrowDown" && key_press === false) {
+        if ((event.key === "ArrowDown" || event.key === "s") && key_press === false) {
             direction = [0, vectorAmt];
             send_one(ws, 'movement', direction, [])
             key_press = true
         }
-        if (event.key === "ArrowUp" && key_press === false) {
+        if ((event.key === "ArrowUp" || event.key === "w") && key_press === false) {
             direction = [0, -vectorAmt];
             send_one(ws, 'movement', direction, [])
             key_press = true
         }
-        if (event.key === "ArrowLeft" && key_press === false) {
+        if ((event.key === "ArrowLeft" || event.key === "a") && key_press === false) {
             direction = [-vectorAmt, 0];
             send_one(ws, 'movement', direction, [])
             key_press = true
         }
-        if (event.key === "ArrowRight" && key_press === false) {
+        if ((event.key === "ArrowRight" || event.key === "d") && key_press === false) {
             direction = [vectorAmt, 0];
             send_one(ws, 'movement', direction, [])
             key_press = true
