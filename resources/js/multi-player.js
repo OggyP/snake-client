@@ -119,65 +119,60 @@ window.addEventListener("keydown", function (event) {
             send_one(ws, 'movement', direction, [])
             key_press = true
         }
-
+    } else {
+        if (event.key === " ") {
+            requeue()
+        }
     }
 }, true);
 
 
 // Deal with touch input
-let touchStart;
-let touchDistance;
 window.addEventListener("touchstart", function (e) {
     if (game_start && e.touches) {
-        touchStart = [
-            e.touches[0].pageX,
-            e.touches[0].pageY
-        ]
-    }
-}, true);
-
-window.addEventListener("touchmove", function (e) {
-    if (game_start && e.touches) {
-        touchDistance = [
-            e.touches[0].pageX - touchStart[0],
-            e.touches[0].pageY - touchStart[1]
-        ];
-
-        var key_press = false;
-
-        // Horizontal movement
-        if (Math.abs(touchDistance[0]) > Math.abs(touchDistance[1]) && key_press === false) {
-            if (touchDistance[0] > 0) {
-                // right
-                direction = [vectorAmt, 0];
-                send_one(ws, 'movement', direction, [])
-                key_press = true
-            } else {
-                // left
-                direction = [-vectorAmt, 0];
-                send_one(ws, 'movement', direction, [])
-                key_press = true
-            }
+        let center = {
+            'x': $(window).width() / 2,
+            'y': $(window).height() / 2
+        };
+        let touchCoords = {
+            'x': e.touches[0].clientX,
+            'y': e.touches[0].clientY
+        };
+        let distFromCenter = {
+            'x': touchCoords.x - center.x,
+            'y': touchCoords.y - center.y
         }
 
-        // Horizontal movement
-        else if (Math.abs(touchDistance[0]) < Math.abs(touchDistance[1]) && key_press === false) {
-            if (touchDistance[1] > 0) {
-                // down
-                direction = [0, vectorAmt];
-                send_one(ws, 'movement', direction, [])
-                key_press = true
+        if (Math.abs(distFromCenter.x) > Math.abs(distFromCenter.y)) {
+            /* Horizontal */
+
+            if (touchCoords.x > center.x) {
+                // Right
+                direction = [vectorAmt, 0];
+                send_one(ws, 'movement', direction, []);
             } else {
-                // up
+                // Left
+                direction = [-vectorAmt, 0];
+                send_one(ws, 'movement', direction, []);
+            }
+        } else {
+            /* Vertical */
+
+            if (touchCoords.y > center.y) {
+                // Down
+                direction = [0, vectorAmt];
+                send_one(ws, 'movement', direction, []);
+            } else {
+                // Up
                 direction = [0, -vectorAmt];
-                send_one(ws, 'movement', direction, [])
-                key_press = true
+                send_one(ws, 'movement', direction, []);
             }
         }
 
         e.preventDefault();
     }
 }, true);
+
 
 
 // On resize
