@@ -1,6 +1,6 @@
 // define
 const clientVersion = 6.0
-var ws = new WebSocket('wss://snake.oggyp.com:8444');
+var ws = new WebSocket('wss://api.oggyp.com/ws/snake');
 var game_start = false;
 var player_no = 0;
 var direction = []
@@ -87,7 +87,7 @@ $('#countdown').hide();
 
 
 // Deal with keyboard input
-window.addEventListener("keydown", function (event) {
+window.addEventListener("keydown", function(event) {
     if (game_start) {
         if (event.defaultPrevented) {
             return; // Do nothing if the event was already processed
@@ -128,7 +128,7 @@ window.addEventListener("keydown", function (event) {
 
 
 // Deal with touch input
-window.addEventListener("touchstart", function (e) {
+window.addEventListener("touchstart", function(e) {
     if (game_start && e.touches) {
         let center = {
             'x': $(window).width() / 2,
@@ -184,7 +184,7 @@ window.addEventListener("resize", function() {
 
     console.log('Box Size ' + box_size + 'px')
 
-//width="400" height="300"
+    //width="400" height="300"
     canvas.setAttribute('width', x_box_amount * box_size);
     canvas.setAttribute('height', y_box_amount * box_size);
     canvas.style.width = x_box_amount * box_size;
@@ -209,7 +209,7 @@ window.addEventListener("resize", function() {
 });
 
 // event emmited when connected
-ws.onopen = function () {
+ws.onopen = function() {
     console.log('Web Socket Connected')
     checkForToken()
     $('#account-wrapper').show();
@@ -217,19 +217,19 @@ ws.onopen = function () {
 }
 
 // event emmited when connected
-ws.onclose = function () {
+ws.onclose = function() {
     if (!errorPageEdited) {
         error("Disconnected from OggyP Snake Server", "Try reloading the page. (Server Closed 11:30pm - 6:30am. Buy me a better server if you want it to run 24/7)")
     }
 }
 
 // event emmited when connected
-ws.onerror = function () {
+ws.onerror = function() {
     error("Server Connection Error", "Try reloading the page or try again later.")
 }
 
 // event emitted when receiving message
-ws.onmessage = function (ev) {
+ws.onmessage = function(ev) {
     // receive message
     try {
         const message = JSON.parse(ev.data);
@@ -243,17 +243,13 @@ ws.onmessage = function (ev) {
                 $('#game-code').hide()
                 $('#game-select').hide();
                 $('#loading').show();
-            }
-
-            else if (message.content === 'private match wait') {
+            } else if (message.content === 'private match wait') {
                 $('#game-select').hide();
                 $('#loading').show();
                 $('#game-code').show()
                 $('#game-code').val('')
                 $('#game-code').text('Game Code: ' + message.code)
-            }
-
-            else if (message.content === 'found') {
+            } else if (message.content === 'found') {
                 var player_list = ['player1', 'player2']
                 if (message.mode > 2) {
                     player_list.push('player3')
@@ -277,9 +273,7 @@ ws.onmessage = function (ev) {
                     const player_about = JSON.parse(message[player])
                     $('.' + player + '-info').show()
                     $('#' + player + '-username').text(player_about.username)
-                    console.log(player_about.rd2)
                     if (message.mode !== 3 && player_about.rd2 > 200) {
-                        console.log('QUESTIONS')
                         $('#' + player + '-rating').text(Math.round(player_about[ratingToCheck]) + '?')
                     } else {
                         $('#' + player + '-rating').text(Math.round(player_about[ratingToCheck]))
@@ -313,9 +307,7 @@ ws.onmessage = function (ev) {
                 current_game = new game(message.food, message.mode)
                 drawRect(ctx, message.food[0], message.food[1], box_size, red)
             }
-        }
-
-        else if (message.type === 'countdown') {
+        } else if (message.type === 'countdown') {
             if (message.content === 0) {
                 $('#countdown').hide()
                 game_start = true
@@ -341,9 +333,7 @@ ws.onmessage = function (ev) {
                 }
 
             }
-        }
-
-        else if (message.type === 'game') {
+        } else if (message.type === 'game') {
             if (message.hasOwnProperty('food')) {
                 current_game.food = message.food
                 drawRect(ctx, current_game.food[0], current_game.food[1], box_size, red)
@@ -351,14 +341,12 @@ ws.onmessage = function (ev) {
             }
 
             const snakes = [current_game.snake1, current_game.snake2]
-            console.log('Mode' + current_game.mode)
             if (current_game.mode > 2) {
                 snakes.push(current_game.snake3)
             }
             if (current_game.mode > 3) {
                 snakes.push(current_game.snake4)
             }
-            console.log(snakes)
             // FOR EACH GAME TICK
             snakes.forEach(current_snake => {
                 if (!current_snake.dead) {
@@ -379,18 +367,14 @@ ws.onmessage = function (ev) {
                     drawRect(ctx, current_snake.snake_head[0], current_snake.snake_head[1], box_size, current_snake.colour)
                 }
             });
-        }
-
-        else if (message.type === 'game alert') {
+        } else if (message.type === 'game alert') {
             $('#countdown').show()
             $('#countdown').html('<h1>' + message.content + '</h1>')
-        }
-
-        else if (message.type === 'end') {
+        } else if (message.type === 'end') {
             audio['death'].play()
             $('#countdown').show()
             $('#countdown').html('<h1>' + message.content + '</h1>')
-            setTimeout(function(){
+            setTimeout(function() {
                 const context = canvas.getContext('2d');
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 $('#game-select').show();
@@ -404,9 +388,7 @@ ws.onmessage = function (ev) {
                 game_start = false
                 player_no = 0
             }, 3000);
-        }
-
-        else if (message.type === 'login') {
+        } else if (message.type === 'login') {
             if (message.content === 'success') {
                 if (message.hasOwnProperty("token")) {
                     setCookie("token", message.token + "|" + message.userID, 7)
@@ -419,62 +401,45 @@ ws.onmessage = function (ev) {
                 });
                 send_one(ws, 'rating', null, [])
                 send_one(ws, 'rating3', null, [])
-            }
-
-            else if (message.content === 'fail') {
+            } else if (message.content === 'fail') {
                 $('#login-error').text(message.reason)
             }
-        }
-
-        else if (message.type === 'register') {
+        } else if (message.type === 'register') {
             if (message.content === 'success') {
                 hideRegister();
-            }
-
-            else if (message.content === 'fail') {
+            } else if (message.content === 'fail') {
                 $('#register-error').text(message.reason)
             }
-        }
-
-        else if (message.type === 'rating') {
+        } else if (message.type === 'rating') {
             if (message.reliable) {
-                $('#2-player-rating').text("(" +Math.round(message.content) + ")")
+                $('#2-player-rating').text("(" + Math.round(message.content) + ")")
             } else {
-                $('#2-player-rating').text("(" +Math.round(message.content) + "?)")
+                $('#2-player-rating').text("(" + Math.round(message.content) + "?)")
             }
-            $('#3-player-rating').text("(" +Math.round(message.rating3) + ")")
-        }
-
-        else if (message.type === 'queuingPlayers') {
+            $('#3-player-rating').text("(" + Math.round(message.rating3) + ")")
+        } else if (message.type === 'queuingPlayers') {
             $("#player-list").empty();
             $("#player-list-title").text("Players Queuing (" + message.content.length + "/" + message.maxPlayers + "):");
             message.content.forEach(username => {
                 $("#player-list").append("<li class=\"player-username\">" + username + "</li>")
             })
-        }
-
-        else if (message.type === 'logout') {
+        } else if (message.type === 'logout') {
             window.location.reload(true)
-        }
-
-        else if (message.type === 'gameVersion') {
+        } else if (message.type === 'gameVersion') {
             if (Math.floor(message.content) !== Math.floor(clientVersion) && getCookie("dev") === "") {
                 error("You are running an incompatible version of snake!", "Client Version: " + clientVersion + " | Server Version: " + message.content + " | Try force reloading the page.")
-                // console.log("Attempting auto reload.")
-                // window.location.reload(true)
+                    // console.log("Attempting auto reload.")
+                    // window.location.reload(true)
             } else {
                 console.log("Network Compatible")
             }
             console.log("Server Version: " + message.content)
             console.log("Client Version: " + clientVersion)
-        }
-
-        else if (message.type === 'error') {
+        } else if (message.type === 'error') {
             error(message.content, "Try reloading the page.")
             errorPageEdited = true;
         }
-    }
-    catch (e) {
+    } catch (e) {
         console.log(e)
     }
 }
@@ -490,8 +455,8 @@ function home() {
 
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    let expires = "expires="+ d.toUTCString();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=None;Secure";
 }
 
@@ -499,7 +464,7 @@ function getCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
+    for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
@@ -521,14 +486,18 @@ function checkForToken() {
 
 function register() {
     if ($('#password-register-verify').val() === $('#password-register').val()) {
-        send_one(ws, 'register', $('#username-register').val(), [['password', $('#password-register').val()]])
+        send_one(ws, 'register', $('#username-register').val(), [
+            ['password', $('#password-register').val()]
+        ])
     } else {
         $('#register-error').text('Passwords do not match')
     }
 }
 
 function login() {
-    send_one(ws, 'login', $('#username-input').val(), [['password', $('#password-input').val()]])
+    send_one(ws, 'login', $('#username-input').val(), [
+        ['password', $('#password-input').val()]
+    ])
 }
 
 function send_one(ws, type, content, meta) {
@@ -546,10 +515,10 @@ function send_one(ws, type, content, meta) {
 
 function checkSupported() {
     var canvas = document.getElementById('canvas');
-    if (canvas.getContext){
+    if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
         return true
-        // Canvas is supported
+            // Canvas is supported
     } else {
         // Canvas is not supported
         alert("We're sorry, but your browser does not support the canvas tag. Please use any web browser other than Internet Explorer.");
@@ -572,20 +541,24 @@ function clearRect(canvas, x, y, box_size) {
 }
 
 function requeue() {
-    send_one(ws, 'match', 'random', [['mode', lastGame.mode]])
+    send_one(ws, 'match', 'random', [
+        ['mode', lastGame.mode]
+    ])
     $('#game-type').text(lastGame.text)
 }
 
 function logout() {
     if (getCookie("token") !== "") {
-        send_one(ws, 'logout', '', [["token", getCookie("token")]])
+        send_one(ws, 'logout', '', [
+            ["token", getCookie("token")]
+        ])
     }
 
     deleteCookie("token")
 }
 
 function deleteCookie(name) {
-    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;SameSite=None;Secure';
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;SameSite=None;Secure';
 }
 
 function showGame() {
@@ -609,7 +582,9 @@ function cheat(amt) {
 }
 
 function btnClicked(mode, text) {
-    send_one(ws, 'match', 'random', [['mode', mode]])
+    send_one(ws, 'match', 'random', [
+        ['mode', mode]
+    ])
     $('#game-type').text(text)
     lastGame.mode = mode
     lastGame.text = text

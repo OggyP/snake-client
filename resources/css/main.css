@@ -133,6 +133,88 @@ main > * {
 }
 
 
+/**OPTIONS**/
+.options {
+    box-sizing: content-box;
+    background: #23272A;
+    overflow: hidden;
+
+    --bdrs: 0 50px 50px 0;
+    -webkit-border-radius: var(--bdrs);
+    -moz-border-radius: var(--bdrs);
+    border-radius: var(--bdrs);
+
+    --size: 40px;
+    --menu-width: 200px;
+    --menu-height: 100px;
+    margin-left: 0;
+    padding: 5px 5px 5px 40px;
+    width: var(--size);
+    height: var(--size);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    --trs: 150ms;
+    -webkit-transition: var(--trs);
+    -moz-transition: var(--trs);
+    -ms-transition: var(--trs);
+    -o-transition: var(--trs);
+    transition: var(--trs);
+}
+
+.options:hover,
+.options:focus {
+    padding-bottom: calc(var(--menu-height) - var(--size));
+    width: var(--menu-width);
+}
+
+.options * {
+    box-sizing: border-box;
+}
+
+.options #username {
+    overflow: hidden;
+    --spacer: 10px;
+    width: 0;
+
+    -webkit-transition: var(--trs);
+    -moz-transition: var(--trs);
+    -ms-transition: var(--trs);
+    -o-transition: var(--trs);
+    transition: var(--trs);
+}
+
+.options:hover #username,
+.options:focus #username {
+    margin-left: var(--spacer);
+    width: calc(var(--menu-width) - var(--size) - var(--spacer));
+}
+
+.options > div {
+    padding-left: var(--size);
+    display: none;
+
+    position: fixed;
+    top: calc(30px + var(--size));
+    left: 40px;
+}
+
+.options:hover > div {
+    display: block;
+}
+
+.options > div .button {
+    margin: 0;
+    font-size: 14px;
+}
+
+
 /**GAMEMODES**/
 .gamemodes {
     background: #23272A;

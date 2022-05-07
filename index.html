@@ -72,7 +72,6 @@
             </div>
         </div>
 
-
         <div id="register" class="centre-items">
             <h1>Register</h1>
             <p id="register-error"></p>
@@ -104,10 +103,12 @@
 
 
     <main id="game-select">
-<!--        The options class should be top left. I want to have the username and the logout button there. Ok Kaelan now code the css for it-->
         <section class="options">
-            <p id="username" class="info username"></p>
-            <button id="option logout" onclick="logout()">Logout</button>
+            <span class="material-icons-round">account_circle</span>
+            <span id="username" class="info username"></span>
+            <div>
+                <button id="option logout" class="button" onclick="logout()">Logout</button>
+            </div>
         </section>
 
         <section class="title centre-items">
